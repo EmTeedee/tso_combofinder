@@ -1,7 +1,7 @@
-#include "dsofinder.h"
-#include "ui_dsofinder.h"
+#include "tsofinder.h"
+#include "ui_tsofinder.h"
 
-void DsoFinder::set_gui(bool small, bool is_debug)
+void TSOFinder::set_gui(bool small, bool is_debug)
 {
     if(small){
         set_windowparameters(0);
@@ -59,7 +59,7 @@ void DsoFinder::set_gui(bool small, bool is_debug)
     }
 }
 
-void DsoFinder::set_windowparameters(int value)
+void TSOFinder::set_windowparameters(int value)
 {
     //ENABLE/DISABLE ALLWAYS-ON-TOP
     if(value>0 && !current_ontop_windowsetting) { setWindowFlags(Qt::WindowStaysOnTopHint); current_ontop_windowsetting = true; }
@@ -67,7 +67,7 @@ void DsoFinder::set_windowparameters(int value)
     this->show();
 }
 
-void DsoFinder::on_ontopcheckbox_stateChanged(int is_checked)
+void TSOFinder::on_ontopcheckbox_stateChanged(int is_checked)
 {
     set_windowparameters(is_checked);
     this->move(config.position_small);
@@ -75,12 +75,12 @@ void DsoFinder::on_ontopcheckbox_stateChanged(int is_checked)
     else config.ontop = false;
 }
 
-int DsoFinder::get_method()
+int TSOFinder::get_method()
 {
     return ui->methodtab->currentIndex();
 }
 
-void DsoFinder::on_methodtab_currentChanged(int index)
+void TSOFinder::on_methodtab_currentChanged(int index)
 {
     if(index==1) {                      //BUILDING-SITE-METHOD
         if(bg_exist==false) {           //INIT METHOD IF BG-PIC IS NOT LOADED
@@ -89,14 +89,14 @@ void DsoFinder::on_methodtab_currentChanged(int index)
     }
 }
 
-void DsoFinder::activate_buttons(bool activate)
+void TSOFinder::activate_buttons(bool activate)
 {
     ui->bg_editpushButton->setEnabled(activate);
     ui->showbgButton->setEnabled(activate);
     ui->bgdeletepushButton->setEnabled(activate);
 }
 
-void DsoFinder::load_background()
+void TSOFinder::load_background()
 {
     // TRY LOADING BACKGROUND
     if(BGImage.load(QString("background%1.png").arg(config.use_bg))==true) {
@@ -113,13 +113,13 @@ void DsoFinder::load_background()
     else activate_buttons(true);
 }
 
-void DsoFinder::on_bgcomboBox_activated(int index)
+void TSOFinder::on_bgcomboBox_activated(int index)
 {
     config.use_bg = index;
     load_background();
 }
 
-void DsoFinder::setactive(bool active)
+void TSOFinder::setactive(bool active)
 {
     if(!active) {
         ui->findButton->setText("searching...");

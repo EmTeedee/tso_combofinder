@@ -1,9 +1,9 @@
-#include "dsofinder.h"
+#include "tsofinder.h"
 
 //THIS FILE CONTAINS BASIC INFORMATION ON EVENTS AND RELATED ITEMS
 //FOR DETAILED ITEM DEFINITIONS SEE items.cpp
 
-void DsoFinder::init_events()
+void TSOFinder::init_events()
 {
     eventcount = 7;
 

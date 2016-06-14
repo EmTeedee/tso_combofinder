@@ -1,9 +1,9 @@
-#include "dsofinder.h"
-#include "ui_dsofinder.h"
+#include "tsofinder.h"
+#include "ui_tsofinder.h"
 
 //THIS FILE CONTAINS ALL CODE FOR READING & WRITING THE CONFIG FILE AND INITIALIZATION OF THE UI
 
-void DsoFinder::load_settings()
+void TSOFinder::load_settings()
 {
     //LOAD CONFIGFILE
     configfile = new QSettings("config.cfg",QSettings::IniFormat);      //INIT CONFIGFILE
@@ -38,7 +38,7 @@ void DsoFinder::load_settings()
     configfile->sync();
 }
 
-void DsoFinder::init_ui_options()
+void TSOFinder::init_ui_options()
 {
     //SET OPTION UI
     ui->ontopcheckbox->setChecked(config.ontop);
@@ -70,7 +70,7 @@ void DsoFinder::init_ui_options()
     if(config.stay_big) ui->waittimegroupbox->setDisabled(true);
 }
 
-void DsoFinder::check_version()
+void TSOFinder::check_version()
 {
     // CHANGE SETTINGS WHEN UPDATING TO NEW VERSION
     if(config.vid != cvid) {
@@ -99,7 +99,7 @@ void DsoFinder::check_version()
     }
 }
 
-void DsoFinder::save_settings()
+void TSOFinder::save_settings()
 {
     configfile->beginGroup("USER-SETTINGS");
     configfile->setValue("version",config.vid);

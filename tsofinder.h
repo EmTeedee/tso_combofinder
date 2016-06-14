@@ -1,5 +1,5 @@
-#ifndef DSOFINDER_H
-#define DSOFINDER_H
+#ifndef TSOFINDER_H
+#define TSOFINDER_H
 
 #include <QMainWindow>
 #include "QMessageBox"
@@ -16,10 +16,10 @@
 #include <QInputDialog>
 
 namespace Ui {
-    class DsoFinder;
+    class TSOFinder;
 }
 
-class DsoFinder : public QMainWindow
+class TSOFinder : public QMainWindow
 {
     Q_OBJECT
 
@@ -136,8 +136,8 @@ public:
     bool current_small_window;
     bool options_visible;
 
-    explicit DsoFinder(int argc,char* argv[],QWidget *parent = 0);
-    ~DsoFinder();
+    explicit TSOFinder(int argc,char* argv[],QWidget *parent = 0);
+    ~TSOFinder();
 
     //DECLARATION OF IMPLEMENTED FUNCTIONS
     int get_method();
@@ -219,7 +219,7 @@ private slots:
     void on_bgdeletepushButton_clicked();
 
 private:
-    Ui::DsoFinder *ui;
+    Ui::TSOFinder *ui;
 };
 
-#endif // DSOFINDER_H
+#endif // TSOFINDER_H

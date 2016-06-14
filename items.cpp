@@ -1,4 +1,4 @@
-#include "dsofinder.h"
+#include "tsofinder.h"
 
 // THIS FILE CAN BE EDITED FREELY TO ALTER SEARCHPARAMETERS OR ADD NEW ITEMS
 // IF YOU DO SO MAKE SURE THAT ARRAY-SIZES FIT:
@@ -8,7 +8,7 @@
 // borderbox = AT LEAST THE MAXIMUM SPREAD OF RELATIVE X AND Y POSITIONS +1. IF DEFINED PIXELS HAVE e.g.: -1, -4, 2, 3 AS RELATIVE pos, THEN borderbox MUST BE AT LEAST 5! (abs(-4)+1)
 // FAILURE IN ANY OF THIS MAY LEAD TO CRASHES
 
-void DsoFinder::init_items()
+void TSOFinder::init_items()
 {
     borderbox = 10;
     itemcount = 0;

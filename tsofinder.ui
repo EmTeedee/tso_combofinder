@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DsoFinder</class>
- <widget class="QMainWindow" name="DsoFinder">
+ <class>TSOFinder</class>
+ <widget class="QMainWindow" name="TSOFinder">
   <property name="geometry">
    <rect>
     <x>0</x>

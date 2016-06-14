@@ -1,12 +1,12 @@
 #include <QApplication>
-#include "dsofinder.h"
+#include "tsofinder.h"
 
 //THIS FILE CONTAINS main()
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    DsoFinder w(argc,argv);
+    TSOFinder w(argc,argv);
     w.show();
 
     return a.exec();

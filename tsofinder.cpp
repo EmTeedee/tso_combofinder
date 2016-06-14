@@ -1,10 +1,10 @@
-#include "dsofinder.h"
-#include "ui_dsofinder.h"
+#include "tsofinder.h"
+#include "ui_tsofinder.h"
 #include "QDesktopWidget"
 
-DsoFinder::DsoFinder(int argc,char* argv[],QWidget *parent) :
+TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DsoFinder)
+    ui(new Ui::TSOFinder)
 {
     // VERSION PARAMETERS
     currentversion = "15-02-19";
@@ -44,7 +44,7 @@ DsoFinder::DsoFinder(int argc,char* argv[],QWidget *parent) :
     set_gui(true,debug);
 }
 
-DsoFinder::~DsoFinder()
+TSOFinder::~TSOFinder()
 {
     //DECONSTRUCTUR - SAVE SETTING AND KILL CLASS
     save_settings();
@@ -52,7 +52,7 @@ DsoFinder::~DsoFinder()
 }
 
 
-void DsoFinder::on_takeButton_clicked()
+void TSOFinder::on_takeButton_clicked()
 {
     //TAKE SCREENSHOT AND ALLOCATE PROPPER PIXELARRAY
     if(current_small_window) config.position_small = this->pos();
@@ -83,7 +83,7 @@ void DsoFinder::on_takeButton_clicked()
     set_gui(false,debug);
 }
 
-void DsoFinder::resizeEvent(QResizeEvent *event)
+void TSOFinder::resizeEvent(QResizeEvent *event)
 {
     if(this && !current_small_window)
     {
@@ -92,20 +92,20 @@ void DsoFinder::resizeEvent(QResizeEvent *event)
     }
 }
 
-void DsoFinder::on_resizeButton_clicked()
+void TSOFinder::on_resizeButton_clicked()
 {
     //RESIZE TO SMALL
     if(!config.jump_position) config.position_small = this->pos();
     set_gui(true,debug);
 }
 
-void DsoFinder::on_debugsaveButton_clicked()
+void TSOFinder::on_debugsaveButton_clicked()
 {
     //DEBUGMODE: SAVE SCREENSHOT
     originalPixmap.save("screen.png",0,100);
 }
 
-int DsoFinder::get_bgcount()
+int TSOFinder::get_bgcount()
 {
     int count = 0;
     for(i=0;i<10;i++) {
@@ -120,7 +120,7 @@ int DsoFinder::get_bgcount()
     return count;
 }
 
-void DsoFinder::draw_discovery(QPoint coords, QColor color, Qt::PenStyle style)
+void TSOFinder::draw_discovery(QPoint coords, QColor color, Qt::PenStyle style)
 {
     //ON DISCOVERY PAINT CIRCLE OF GIVEN COLOR AND STYLE
     //if(!(coords.x() <= avatar_width && coords.y() <= avatar_heigth)) { //Do not find something on your Avatar :)
@@ -131,21 +131,21 @@ void DsoFinder::draw_discovery(QPoint coords, QColor color, Qt::PenStyle style)
     //}
 }
 
-bool DsoFinder::is_green(int red, int green, int blue)
+bool TSOFinder::is_green(int red, int green, int blue)
 {
     //CHECK IF RGB IS GREENISH (natural greens)
     if(blue<50 && green>red && green>blue && green>10 && green<140) return true;
     else return false;
 }
 
-bool DsoFinder::is_brigth(int green)
+bool TSOFinder::is_brigth(int green)
 {
     //CHECK IF RGB IS A BRIGHTER GREEN
     if(green>60) return true;
     else return false;
 }
 
-void DsoFinder::log_discoverys() // WRITE ALL DISCOVERYS IN LOGFILE
+void TSOFinder::log_discoverys() // WRITE ALL DISCOVERYS IN LOGFILE
 {
     fprintf(results,"Found %i items in screenshot\n",discovery.size());
     for(int i_dis = 0; i_dis<discovery.size();i_dis++) {
@@ -153,7 +153,7 @@ void DsoFinder::log_discoverys() // WRITE ALL DISCOVERYS IN LOGFILE
     }
 }
 
-void DsoFinder::validate_discoverys() // CHECK FOR SEPARATION OF DISCOVERYS AND DISCARD BUNCHED FALSE POSITIVES e.g. IN AVATAR
+void TSOFinder::validate_discoverys() // CHECK FOR SEPARATION OF DISCOVERYS AND DISCARD BUNCHED FALSE POSITIVES e.g. IN AVATAR
 {
     for(int i_dis = 0; i_dis<discovery.size();i_dis++) {
         //if(discovery[i_dis][4] != 0) {
@@ -168,7 +168,7 @@ void DsoFinder::validate_discoverys() // CHECK FOR SEPARATION OF DISCOVERYS AND 
     }
 }
 
-void DsoFinder::draw_valids() // DRAW ALL VALID DISCOVERYS
+void TSOFinder::draw_valids() // DRAW ALL VALID DISCOVERYS
 {
     for(int i_dis=0; i_dis<discovery.size();i_dis++) {
         if(discovery[i_dis][4] > 0) {
@@ -179,7 +179,7 @@ void DsoFinder::draw_valids() // DRAW ALL VALID DISCOVERYS
     }
 }
 
-void DsoFinder::on_findButton_clicked()
+void TSOFinder::on_findButton_clicked()
 {
     set_optionwindow(false);
     setactive(false);
@@ -347,14 +347,14 @@ void DsoFinder::on_findButton_clicked()
 
 }
 
-void DsoFinder::on_debugloadButton_clicked()
+void TSOFinder::on_debugloadButton_clicked()
 {
     //DEBUGMODE: LOAD SCREEN
     originalPixmap.load("screen.png");
     ui->screenlabel->setPixmap(originalPixmap.scaled(ui->screenlabel->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
 }
 
-void DsoFinder::on_savebgButton_clicked()
+void TSOFinder::on_savebgButton_clicked()
 {
     //SAVE & LOAD TAKEN IMAGE AS BACKGROUND IMAGE
     bool ok = false;
@@ -380,7 +380,7 @@ void DsoFinder::on_savebgButton_clicked()
     }
 }
 
-void DsoFinder::on_showbgButton_clicked()
+void TSOFinder::on_showbgButton_clicked()
 {
     //SHOW BACKGROUND IF EXISTING
     if(bg_exist) {
@@ -391,7 +391,7 @@ void DsoFinder::on_showbgButton_clicked()
     }
 }
 
-void DsoFinder::on_bg_editpushButton_clicked()
+void TSOFinder::on_bg_editpushButton_clicked()
 {
     if(config.use_bg >= bg_count) return;
     bool ok = false;
@@ -402,7 +402,7 @@ void DsoFinder::on_bg_editpushButton_clicked()
     }
 }
 
-void DsoFinder::on_bgdeletepushButton_clicked()
+void TSOFinder::on_bgdeletepushButton_clicked()
 {
     if(config.use_bg >= bg_count) return;
     int ok = QMessageBox::question(this,"Delete Background",QString("Do you really want to delete the background file in Slot %1?").arg(config.use_bg+1),
