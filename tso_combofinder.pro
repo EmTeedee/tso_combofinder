@@ -23,3 +23,8 @@ SOURCES += main.cpp\
 HEADERS  += tsofinder.h
 
 FORMS    += tsofinder.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    images.qrc
