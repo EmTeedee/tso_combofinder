@@ -5,7 +5,7 @@
 
 void TSOFinder::init_events()
 {
-    eventcount = 7;
+    eventcount = 8;
 
     events = new event[eventcount];
     i=0;
@@ -30,11 +30,15 @@ void TSOFinder::init_events()
     events[4].id = 4;
     events[4].itemcount = 8;
 
-    events[5].caption = "Halloween 2014";
+    events[5].caption = "Halloween 2014/15";
     events[5].id = 5;
     events[5].itemcount = 1;
 
-    events[6].caption = "Easter 2015";
+    events[6].caption = "Easter 2015/16";
     events[6].id = 6;
     events[6].itemcount = 1;
+
+    events[7].caption = "UEFA Euro 2016";
+    events[7].id = 7;
+    events[7].itemcount = 8;
 }

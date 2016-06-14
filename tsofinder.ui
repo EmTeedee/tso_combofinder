@@ -14,7 +14,7 @@
    <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>DSO Finder</string>
+   <string>TSO Finder</string>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -27,11 +27,20 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
     <property name="verticalSpacing">
      <number>1</number>
-    </property>
-    <property name="margin">
-     <number>5</number>
     </property>
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -226,7 +235,16 @@
             <string>Pixel-Finder</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>3</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>3</number>
+            </property>
+            <property name="bottomMargin">
              <number>3</number>
             </property>
             <item>
@@ -238,8 +256,8 @@
                </size>
               </property>
               <property name="text">
-               <string>using footprints of 31 items
-(events till hallowwen 2014 included)</string>
+               <string>Footprints of 32 items
+(events up to Summer 2016 included)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -270,7 +288,16 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <property name="margin">
+            <property name="leftMargin">
+             <number>3</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>3</number>
+            </property>
+            <property name="bottomMargin">
              <number>3</number>
             </property>
             <item>
@@ -518,7 +545,16 @@
             <string>Behavior / Multimonitor</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>3</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>3</number>
+            </property>
+            <property name="bottomMargin">
              <number>3</number>
             </property>
             <item row="0" column="0">

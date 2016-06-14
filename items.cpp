@@ -170,7 +170,7 @@ void TSOFinder::init_items()
         items[i].shape[2].pixel[1].pos.y_pos = 2;
         i++;
 
-        items[i].caption = "Kessel";
+        items[i].caption = "Kettle";
         items[i].item_type = "standard";
         items[i].color = QColor(255,0,0);
         items[i].alt_color = QColor(0,0,250);
@@ -286,7 +286,7 @@ void TSOFinder::init_items()
         items[i].shape[0].pixel[2].pos.y_pos = -1;
         i++;
 
-        items[i].caption = "Fur";
+        items[i].caption = "Leather";
         items[i].item_type = "standard";
         items[i].color = QColor(255,0,0);
         items[i].alt_color = QColor(0,0,250);
@@ -406,7 +406,7 @@ void TSOFinder::init_items()
     }
 
     if(config.useitems_adventure) {
-        items[i].caption = "Bronzekessel";
+        items[i].caption = "Bronze Cauldron";
         items[i].item_type = "adventure";
         items[i].color = QColor(255,0,0);
         items[i].alt_color = QColor(0,0,250);
@@ -489,7 +489,7 @@ void TSOFinder::init_items()
 
     //if(config.useitems_halloween13) {
     if(config.use_event == 1) {
-        items[i].caption = "Kuerbis";
+        items[i].caption = "Pumpkin";
         items[i].item_type = "event";
         items[i].color = QColor(220,170,40);
         items[i].alt_color = QColor(220,170,40);
@@ -963,58 +963,6 @@ void TSOFinder::init_items()
     }
 
     if(config.use_event == 4) {
-        items[i].caption = "Football";
-        items[i].item_type = "event";
-        items[i].color = QColor(220,170,40);
-        items[i].alt_color = QColor(220,170,40);
-        items[i].penstyle = Qt::SolidLine;
-        items[i].shapecount = 1;
-        items[i].shape = new item_shape[items[i].shapecount];
-        items[i].shape[0].needed = 5;
-        items[i].shape[0].pixelcount = 5;
-        items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
-        items[i].shape[0].pixel[0].r.min = 165;
-        items[i].shape[0].pixel[0].r.max = 188;
-        items[i].shape[0].pixel[0].g.min = 173;
-        items[i].shape[0].pixel[0].g.max = 200;
-        items[i].shape[0].pixel[0].b.min = 162;
-        items[i].shape[0].pixel[0].b.max = 185;
-        items[i].shape[0].pixel[0].pos.x_pos = 0;
-        items[i].shape[0].pixel[0].pos.y_pos = 0;
-        items[i].shape[0].pixel[1].r.min = 168;
-        items[i].shape[0].pixel[1].r.max = 190;
-        items[i].shape[0].pixel[1].g.min = 170;
-        items[i].shape[0].pixel[1].g.max = 192;
-        items[i].shape[0].pixel[1].b.min = 160;
-        items[i].shape[0].pixel[1].b.max = 180;
-        items[i].shape[0].pixel[1].pos.x_pos = 1;
-        items[i].shape[0].pixel[1].pos.y_pos = 0;
-        items[i].shape[0].pixel[2].r.min = 137;
-        items[i].shape[0].pixel[2].r.max = 160;
-        items[i].shape[0].pixel[2].g.min = 140;
-        items[i].shape[0].pixel[2].g.max = 163;
-        items[i].shape[0].pixel[2].b.min = 129;
-        items[i].shape[0].pixel[2].b.max = 152;
-        items[i].shape[0].pixel[2].pos.x_pos = 2;
-        items[i].shape[0].pixel[2].pos.y_pos = 0;
-        items[i].shape[0].pixel[3].r.min = 85;
-        items[i].shape[0].pixel[3].r.max = 105;
-        items[i].shape[0].pixel[3].g.min = 80;
-        items[i].shape[0].pixel[3].g.max = 100;
-        items[i].shape[0].pixel[3].b.min = 64;
-        items[i].shape[0].pixel[3].b.max = 80;
-        items[i].shape[0].pixel[3].pos.x_pos = 1;
-        items[i].shape[0].pixel[3].pos.y_pos = 1;
-        items[i].shape[0].pixel[4].r.min = 163;
-        items[i].shape[0].pixel[4].r.max = 195;
-        items[i].shape[0].pixel[4].g.min = 170;
-        items[i].shape[0].pixel[4].g.max = 203;
-        items[i].shape[0].pixel[4].b.min = 160;
-        items[i].shape[0].pixel[4].b.max = 190;
-        items[i].shape[0].pixel[4].pos.x_pos = 2;
-        items[i].shape[0].pixel[4].pos.y_pos = 1;
-        i++;
-
         items[i].caption = "Corner";
         items[i].item_type = "event";
         items[i].color = QColor(220,170,40);
@@ -1086,6 +1034,60 @@ void TSOFinder::init_items()
         items[i].shape[0].pixel[2].pos.x_pos = 0;
         items[i].shape[0].pixel[2].pos.y_pos = 1;
         i++;*/
+    }
+
+    if(config.use_event == 4 || config.use_event == 7) {
+        items[i].caption = "Football";
+        items[i].item_type = "event";
+        items[i].color = QColor(220,170,40);
+        items[i].alt_color = QColor(220,170,40);
+        items[i].penstyle = Qt::SolidLine;
+        items[i].shapecount = 1;
+        items[i].shape = new item_shape[items[i].shapecount];
+        items[i].shape[0].needed = 5;
+        items[i].shape[0].pixelcount = 5;
+        items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
+        items[i].shape[0].pixel[0].r.min = 165;
+        items[i].shape[0].pixel[0].r.max = 188;
+        items[i].shape[0].pixel[0].g.min = 173;
+        items[i].shape[0].pixel[0].g.max = 200;
+        items[i].shape[0].pixel[0].b.min = 162;
+        items[i].shape[0].pixel[0].b.max = 185;
+        items[i].shape[0].pixel[0].pos.x_pos = 0;
+        items[i].shape[0].pixel[0].pos.y_pos = 0;
+        items[i].shape[0].pixel[1].r.min = 168;
+        items[i].shape[0].pixel[1].r.max = 190;
+        items[i].shape[0].pixel[1].g.min = 170;
+        items[i].shape[0].pixel[1].g.max = 192;
+        items[i].shape[0].pixel[1].b.min = 160;
+        items[i].shape[0].pixel[1].b.max = 180;
+        items[i].shape[0].pixel[1].pos.x_pos = 1;
+        items[i].shape[0].pixel[1].pos.y_pos = 0;
+        items[i].shape[0].pixel[2].r.min = 137;
+        items[i].shape[0].pixel[2].r.max = 160;
+        items[i].shape[0].pixel[2].g.min = 140;
+        items[i].shape[0].pixel[2].g.max = 163;
+        items[i].shape[0].pixel[2].b.min = 129;
+        items[i].shape[0].pixel[2].b.max = 152;
+        items[i].shape[0].pixel[2].pos.x_pos = 2;
+        items[i].shape[0].pixel[2].pos.y_pos = 0;
+        items[i].shape[0].pixel[3].r.min = 85;
+        items[i].shape[0].pixel[3].r.max = 105;
+        items[i].shape[0].pixel[3].g.min = 80;
+        items[i].shape[0].pixel[3].g.max = 100;
+        items[i].shape[0].pixel[3].b.min = 64;
+        items[i].shape[0].pixel[3].b.max = 80;
+        items[i].shape[0].pixel[3].pos.x_pos = 1;
+        items[i].shape[0].pixel[3].pos.y_pos = 1;
+        items[i].shape[0].pixel[4].r.min = 163;
+        items[i].shape[0].pixel[4].r.max = 195;
+        items[i].shape[0].pixel[4].g.min = 170;
+        items[i].shape[0].pixel[4].g.max = 203;
+        items[i].shape[0].pixel[4].b.min = 160;
+        items[i].shape[0].pixel[4].b.max = 190;
+        items[i].shape[0].pixel[4].pos.x_pos = 2;
+        items[i].shape[0].pixel[4].pos.y_pos = 1;
+        i++;
 
         items[i].caption = "Fist";
         items[i].item_type = "event";
@@ -1586,7 +1588,7 @@ void TSOFinder::init_items()
     }
 
     if(config.use_event == 5) {
-        items[i].caption = "Kuerbis";
+        items[i].caption = "Pumpkin";
         items[i].item_type = "event";
         items[i].color = QColor(220,170,40);
         items[i].alt_color = QColor(220,170,40);
@@ -1733,5 +1735,77 @@ void TSOFinder::init_items()
         items[i].shape[1].pixel[2].pos.x_pos = 1;
         items[i].shape[1].pixel[2].pos.y_pos = 2;
         i++;
+    }
+
+    if(config.use_event == 7) {
+        // uses Football, Show, Banana peel, Red Color,
+        // Telescope, Fist and Elastic Spring from Soccer WM 2014
+
+        items[i].caption = "Training Dummy";
+        items[i].item_type = "event";
+        items[i].color = QColor(220,170,40);
+        items[i].alt_color = QColor(220,170,40);
+        items[i].penstyle = Qt::SolidLine;
+        items[i].shapecount = 1;
+        items[i].shape = new item_shape[items[i].shapecount];
+        items[i].shape[0].needed = 3;
+        items[i].shape[0].pixelcount = 3;
+        items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
+        items[i].shape[0].pixel[0].r.min = 157; // 167
+        items[i].shape[0].pixel[0].r.max = 177;
+        items[i].shape[0].pixel[0].g.min = 119; // 129
+        items[i].shape[0].pixel[0].g.max = 139;
+        items[i].shape[0].pixel[0].b.min = 35; // 44
+        items[i].shape[0].pixel[0].b.max = 54;
+        items[i].shape[0].pixel[0].pos.x_pos = 0;
+        items[i].shape[0].pixel[0].pos.y_pos = 0;
+        items[i].shape[0].pixel[1].r.min = 160; // 170
+        items[i].shape[0].pixel[1].r.max = 180;
+        items[i].shape[0].pixel[1].g.min = 122; // 132
+        items[i].shape[0].pixel[1].g.max = 142;
+        items[i].shape[0].pixel[1].b.min = 40; // 50
+        items[i].shape[0].pixel[1].b.max = 60;
+        items[i].shape[0].pixel[1].pos.x_pos = 0;
+        items[i].shape[0].pixel[1].pos.y_pos = -3;
+        items[i].shape[0].pixel[2].r.min = 168; // 178
+        items[i].shape[0].pixel[2].r.max = 188;
+        items[i].shape[0].pixel[2].g.min = 130; // 140
+        items[i].shape[0].pixel[2].g.max = 150;
+        items[i].shape[0].pixel[2].b.min = 48; // 58
+        items[i].shape[0].pixel[2].b.max = 68;
+        items[i].shape[0].pixel[2].pos.x_pos = 0;
+        items[i].shape[0].pixel[2].pos.y_pos = +4;
+
+        //DARKER SHAPE
+        /*
+        items[i].shape[1].needed = 3;
+        items[i].shape[1].pixelcount = 3;
+        items[i].shape[1].pixel = new pixel_data[items[i].shape[1].pixelcount];
+        items[i].shape[1].pixel[0].r.min = 133;
+        items[i].shape[1].pixel[0].r.max = 148;
+        items[i].shape[1].pixel[0].g.min = 195;
+        items[i].shape[1].pixel[0].g.max = 215;
+        items[i].shape[1].pixel[0].b.min = 162;
+        items[i].shape[1].pixel[0].b.max = 178;
+        items[i].shape[1].pixel[0].pos.x_pos = 0;
+        items[i].shape[1].pixel[0].pos.y_pos = 1;
+        items[i].shape[1].pixel[1].r.min = 85;
+        items[i].shape[1].pixel[1].r.max = 100;
+        items[i].shape[1].pixel[1].g.min = 148;
+        items[i].shape[1].pixel[1].g.max = 162;
+        items[i].shape[1].pixel[1].b.min = 148;
+        items[i].shape[1].pixel[1].b.max = 162;
+        items[i].shape[1].pixel[1].pos.x_pos = -1;
+        items[i].shape[1].pixel[1].pos.y_pos = 1;
+        items[i].shape[1].pixel[2].r.min = 170;
+        items[i].shape[1].pixel[2].r.max = 190;
+        items[i].shape[1].pixel[2].g.min = 150;
+        items[i].shape[1].pixel[2].g.max = 165;
+        items[i].shape[1].pixel[2].b.min = 17;
+        items[i].shape[1].pixel[2].b.max = 26;
+        items[i].shape[1].pixel[2].pos.x_pos = 1;
+        items[i].shape[1].pixel[2].pos.y_pos = 2;
+        i++;
+        */
     }
 }
