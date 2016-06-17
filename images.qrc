@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/icons">
-        <file alias="option">zahnrad.jpg</file>
         <file alias="show">show.png</file>
         <file alias="edit">edit.png</file>
         <file alias="delete">trash.png</file>
         <file alias="save">save.png</file>
+        <file alias="option">gear.png</file>
     </qresource>
 </RCC>

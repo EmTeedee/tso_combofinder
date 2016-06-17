@@ -28,3 +28,6 @@ DISTFILES +=
 
 RESOURCES += \
     images.qrc
+
+QMAKE_TARGET_DESCRIPTION = "The Settlers Online - Collectible Finder"
+win32:RC_ICONS += settler.ico
