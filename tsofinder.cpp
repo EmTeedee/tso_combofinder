@@ -6,10 +6,6 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TSOFinder)
 {
-    // VERSION PARAMETERS
-    currentversion = "2016-06-14";
-    cvid = 160614;
-
     //SET FLAGS FOR NON-DEFAULT WINDOW (NO MINIMIZE & MAXIMIZE BUTTON) AND TITLE
     Qt::WindowFlags flags = Qt::CustomizeWindowHint|Qt::WindowTitleHint|Qt::WindowCloseButtonHint;
     setWindowFlags(flags);
@@ -19,7 +15,7 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     current_small_window = true;
     options_visible = false;
     ui->setupUi(this);
-    this->setWindowTitle(QString("TSO Combo-Finder build "+currentversion));
+    this->setWindowTitle(QString("TSO Combo-Finder build " + CURRENT_VERSION));
 
     //BEGIN DEBUG
     debug=false;

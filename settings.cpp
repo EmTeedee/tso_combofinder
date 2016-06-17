@@ -73,7 +73,7 @@ void TSOFinder::init_ui_options()
 void TSOFinder::check_version()
 {
     // CHANGE SETTINGS WHEN UPDATING TO NEW VERSION
-    if(config.vid != cvid) {
+    if(config.vid != CONFIG_VERSION) {
         if(config.vid > 000001 && config.vid < 140528) {
             // REMOVE OLD DATA FROM CONFIG FILE
             configfile->beginGroup("ITEM-SETTINGS");
@@ -95,7 +95,7 @@ void TSOFinder::check_version()
             }
         }
         config.use_event = 6;
-        config.vid = cvid;
+        config.vid = CONFIG_VERSION;
     }
 }
 

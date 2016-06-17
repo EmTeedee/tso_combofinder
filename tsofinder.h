@@ -111,8 +111,9 @@ public:
     int count_ok,count_ok_min,count_brigth,count_brigth_min,count_double;
 
     //COMMON USED OBJECTS/VARIABLES
-    QString currentversion;
-    int cvid;
+    // VERSION PARAMETERS
+    const QString CURRENT_VERSION = "2016-06-17";
+    const int CONFIG_VERSION = 160614;
 
     QMessageBox msgbox;
     QElapsedTimer timer;
