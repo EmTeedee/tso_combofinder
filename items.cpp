@@ -1746,66 +1746,43 @@ void TSOFinder::init_items()
         items[i].color = QColor(220,170,40);
         items[i].alt_color = QColor(220,170,40);
         items[i].penstyle = Qt::SolidLine;
-        items[i].shapecount = 1;
+        items[i].shapecount = 2;
         items[i].shape = new item_shape[items[i].shapecount];
         items[i].shape[0].needed = 3;
         items[i].shape[0].pixelcount = 3;
         items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
-        items[i].shape[0].pixel[0].r.min = 162; // 167
-        items[i].shape[0].pixel[0].r.max = 172;
-        items[i].shape[0].pixel[0].g.min = 124; // 129
-        items[i].shape[0].pixel[0].g.max = 134;
-        items[i].shape[0].pixel[0].b.min = 39; // 44
-        items[i].shape[0].pixel[0].b.max = 49;
-        items[i].shape[0].pixel[0].pos.x_pos = 0;
-        items[i].shape[0].pixel[0].pos.y_pos = 0;
-        items[i].shape[0].pixel[1].r.min = 160; // 170
-        items[i].shape[0].pixel[1].r.max = 180;
-        items[i].shape[0].pixel[1].g.min = 122; // 132
-        items[i].shape[0].pixel[1].g.max = 142;
-        items[i].shape[0].pixel[1].b.min = 40; // 50
-        items[i].shape[0].pixel[1].b.max = 60;
-        items[i].shape[0].pixel[1].pos.x_pos = 0;
-        items[i].shape[0].pixel[1].pos.y_pos = -3;
-        items[i].shape[0].pixel[2].r.min = 168; // 178
-        items[i].shape[0].pixel[2].r.max = 188;
-        items[i].shape[0].pixel[2].g.min = 130; // 140
-        items[i].shape[0].pixel[2].g.max = 150;
-        items[i].shape[0].pixel[2].b.min = 48; // 58
-        items[i].shape[0].pixel[2].b.max = 68;
-        items[i].shape[0].pixel[2].pos.x_pos = 0;
-        items[i].shape[0].pixel[2].pos.y_pos = +4;
+        items[i].shape[0].pixel[0] = getPixel(167, 129, 44, 0, 0);
+        items[i].shape[0].pixel[1] = getPixel(170, 132, 50, 10, 0, -3);
+        items[i].shape[0].pixel[2] = getPixel(178, 140, 58, 10, 0, 4);
 
         //DARKER SHAPE
-        /*
         items[i].shape[1].needed = 3;
         items[i].shape[1].pixelcount = 3;
         items[i].shape[1].pixel = new pixel_data[items[i].shape[1].pixelcount];
-        items[i].shape[1].pixel[0].r.min = 133;
-        items[i].shape[1].pixel[0].r.max = 148;
-        items[i].shape[1].pixel[0].g.min = 195;
-        items[i].shape[1].pixel[0].g.max = 215;
-        items[i].shape[1].pixel[0].b.min = 162;
-        items[i].shape[1].pixel[0].b.max = 178;
-        items[i].shape[1].pixel[0].pos.x_pos = 0;
-        items[i].shape[1].pixel[0].pos.y_pos = 1;
-        items[i].shape[1].pixel[1].r.min = 85;
-        items[i].shape[1].pixel[1].r.max = 100;
-        items[i].shape[1].pixel[1].g.min = 148;
-        items[i].shape[1].pixel[1].g.max = 162;
-        items[i].shape[1].pixel[1].b.min = 148;
-        items[i].shape[1].pixel[1].b.max = 162;
-        items[i].shape[1].pixel[1].pos.x_pos = -1;
-        items[i].shape[1].pixel[1].pos.y_pos = 1;
-        items[i].shape[1].pixel[2].r.min = 170;
-        items[i].shape[1].pixel[2].r.max = 190;
-        items[i].shape[1].pixel[2].g.min = 150;
-        items[i].shape[1].pixel[2].g.max = 165;
-        items[i].shape[1].pixel[2].b.min = 17;
-        items[i].shape[1].pixel[2].b.max = 26;
-        items[i].shape[1].pixel[2].pos.x_pos = 1;
-        items[i].shape[1].pixel[2].pos.y_pos = 2;
+        items[i].shape[1].pixel[0] = getPixel(165, 129, 44, 10, 0, 0);
+        items[i].shape[1].pixel[1] = getPixel(156, 121, 43, 10, 0, -3);
+        items[i].shape[1].pixel[2] = getPixel( 92,  78, 28, 10, 0, 4);
         i++;
-        */
     }
+}
+
+TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int x_pos, int y_pos) {
+    return getPixel(r, g, b, STANDARD_EPSILON, x_pos, y_pos);
+}
+
+TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int epsilon, int x_pos, int y_pos) {
+    return getPixel(r, epsilon, g, epsilon, b, epsilon, x_pos, y_pos);
+}
+
+TSOFinder::pixel_data TSOFinder::getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos){
+    pixel_data pixel;
+    pixel.r.min = r - epsilon_r;
+    pixel.r.max = r + epsilon_r;
+    pixel.g.min = g - epsilon_g;
+    pixel.g.max = g + epsilon_g;
+    pixel.b.min = b - epsilon_b;
+    pixel.b.max = b + epsilon_b;
+    pixel.pos.x_pos = x_pos;
+    pixel.pos.y_pos = y_pos;
+    return pixel;
 }

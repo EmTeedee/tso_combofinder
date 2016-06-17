@@ -38,7 +38,7 @@ void TSOFinder::init_events()
     events[6].id = 6;
     events[6].itemcount = 1;
 
-    events[7].caption = "UEFA Euro 2016";
+    events[7].caption = "Soccer Euro 2016";
     events[7].id = 7;
     events[7].itemcount = 8;
 }

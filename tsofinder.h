@@ -91,6 +91,7 @@ public:
     };
 
     //PIXELFINDER_RELATED OBJECTS/VARIABLES
+    const int STANDARD_EPSILON = 5;
     item* items;
     int itemcount;
     event* events;
@@ -160,6 +161,10 @@ public:
     void set_optionwindow(bool visible);
     bool is_green(int r, int g, int b);
     bool is_brigth(int g);
+
+    pixel_data getPixel(int r, int g, int b, int x_pos, int y_pos);
+    pixel_data getPixel(int r, int g, int b, int epsilon, int x_pos, int y_pos);
+    pixel_data getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos);
 
 protected:
     void resizeEvent(QResizeEvent* event);
