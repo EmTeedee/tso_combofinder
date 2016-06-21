@@ -1797,12 +1797,12 @@ TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int epsilon, int 
 
 TSOFinder::pixel_data TSOFinder::getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos){
     pixel_data pixel;
-    pixel.r.min = r - epsilon_r;
-    pixel.r.max = r + epsilon_r;
-    pixel.g.min = g - epsilon_g;
-    pixel.g.max = g + epsilon_g;
-    pixel.b.min = b - epsilon_b;
-    pixel.b.max = b + epsilon_b;
+    pixel.r.min = max(0, r - epsilon_r);
+    pixel.r.max = min(255, r + epsilon_r);
+    pixel.g.min = max(0, g - epsilon_g);
+    pixel.g.max = min(255, g + epsilon_g);
+    pixel.b.min = max(0, b - epsilon_b);
+    pixel.b.max = min(255, b + epsilon_b);
     pixel.pos.x_pos = x_pos;
     pixel.pos.y_pos = y_pos;
     return pixel;
