@@ -126,8 +126,8 @@ public:
     const int STANDARD_EPSILON = 5;
 
     // VERSION PARAMETERS
-    const QString CURRENT_VERSION = "2016-06-17";
-    const int CONFIG_VERSION = 160614;
+    const QString CURRENT_VERSION = "2016-06-22";
+    const int CONFIG_VERSION = 220614;
 
     //PIXELFINDER_RELATED OBJECTS/VARIABLES
     item* items;
