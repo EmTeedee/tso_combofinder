@@ -66,6 +66,14 @@ public:
         pixel_data():negating(false){}
     };
 
+    struct player_area_data {
+        bool found;
+        pixel_pos min_pos;
+        pixel_pos max_pos;
+
+        player_area_data():found(false){}
+    };
+
     struct item_shape {
         int pixelcount;
         pixel_data* pixel;
@@ -111,16 +119,23 @@ public:
         bool stay_big;
     };
 
-    //PIXELFINDER_RELATED OBJECTS/VARIABLES
+    // minumum number of pixels between found collectibles
+    const int SEPARATION_MIN = 5;
+
+    // standard acceptable r/g/b/ value difference
     const int STANDARD_EPSILON = 5;
+
+    // VERSION PARAMETERS
+    const QString CURRENT_VERSION = "2016-06-17";
+    const int CONFIG_VERSION = 160614;
+
+    //PIXELFINDER_RELATED OBJECTS/VARIABLES
     item* items;
     int itemcount;
     event* events;
     int eventcount;
     int*** pixels;
-    int shape_disc,shape_negating;
-    int avatar_width, avatar_heigth;
-    bool item_found;
+    pixel_pos player_area_size;
     QVector<QVector<int> > discovery;
 
     //BUILDING_SITE_RELATED OBJECTS/VARIABLES
@@ -132,9 +147,6 @@ public:
     int count_ok,count_ok_min,count_brigth,count_brigth_min,count_double;
 
     //COMMON USED OBJECTS/VARIABLES
-    // VERSION PARAMETERS
-    const QString CURRENT_VERSION = "2016-06-17";
-    const int CONFIG_VERSION = 160614;
 
     QMessageBox msgbox;
     QElapsedTimer timer;
@@ -148,11 +160,8 @@ public:
     QPen pen_dev;
     QRgb imgrgb;
 
-    int x,y;
-    int i,k,j,r,g,b;
-
     int totaldiscoverys;
-    int d_width,d_heigth,borderbox;
+    int d_width,d_heigth;
 
     bool debug;
     bool current_ontop_windowsetting;
@@ -169,7 +178,7 @@ public:
     void setactive(bool active);
     void activate_buttons(bool activate);
     void log_discoverys();
-    void validate_discoverys();
+    void validate_discoverys(player_area_data player_area);
     void draw_valids();
     void draw_discovery(QPoint coords, QColor color, Qt::PenStyle style);
     void init_items();

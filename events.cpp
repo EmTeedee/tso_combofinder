@@ -29,7 +29,6 @@ void TSOFinder::init_events()
     eventcount = 8;
 
     events = new event[eventcount];
-    i=0;
 
     events[0].caption = "None";
     events[0].id = 0;

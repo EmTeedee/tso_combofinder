@@ -46,8 +46,6 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     //INIT VARS
     d_width = 0;
     d_heigth = 0;
-    avatar_width = 125;
-    avatar_heigth = 280;
     bg_exist = false;
     bg_count = get_bgcount(); //CHECK CURRENT DIRECTORY FOR VALID BACKGROUND FILES
     load_settings(); //LOAD USER-DEFINED VARIABLES
@@ -85,11 +83,11 @@ void TSOFinder::on_takeButton_clicked()
         d_width = originalPixmap.width();
         d_heigth = originalPixmap.height();
         pixels = new int**[originalPixmap.width()];
-        for(i=0;i<originalPixmap.width();i++) {
+        for(int i = 0; i < originalPixmap.width(); i++) {
             pixels[i] = new int*[originalPixmap.height()];
-            for(k=0;k<originalPixmap.height();k++) {
+            for(int k = 0; k < originalPixmap.height(); k++) {
                 pixels[i][k] = new int[3];
-                for(j=0;j<3;j++) {
+                for(int j = 0; j<3; j++) {
                     pixels[i][k][j] = 0;
                 }
             }
@@ -125,7 +123,7 @@ void TSOFinder::on_debugsaveButton_clicked()
 int TSOFinder::get_bgcount()
 {
     int count = 0;
-    for(i=0;i<10;i++) {
+    for(int i = 0; i < 10; i++) {
         if(QFile::exists(QString("background%1.png").arg(i))) {
             if(i!=count) {
                 QFile::rename(QString("background%1.png").arg(i),QString("background%1.png").arg(count));
@@ -140,12 +138,10 @@ int TSOFinder::get_bgcount()
 void TSOFinder::draw_discovery(QPoint coords, QColor color, Qt::PenStyle style)
 {
     //ON DISCOVERY PAINT CIRCLE OF GIVEN COLOR AND STYLE
-    //if(!(coords.x() <= avatar_width && coords.y() <= avatar_heigth)) { //Do not find something on your Avatar :)
-        pen_dev.setColor(color);
-        pen_dev.setStyle(style);
-        paint_dev.setPen(pen_dev);
-        paint_dev.drawEllipse(coords,20,20);
-    //}
+    pen_dev.setColor(color);
+    pen_dev.setStyle(style);
+    paint_dev.setPen(pen_dev);
+    paint_dev.drawEllipse(coords,20,20);
 }
 
 bool TSOFinder::is_green(int red, int green, int blue)
@@ -170,18 +166,33 @@ void TSOFinder::log_discoverys() // WRITE ALL DISCOVERYS IN LOGFILE
     }
 }
 
-void TSOFinder::validate_discoverys() // CHECK FOR SEPARATION OF DISCOVERYS AND DISCARD BUNCHED FALSE POSITIVES e.g. IN AVATAR
-{
-    for(int i_dis = 0; i_dis<discovery.size();i_dis++) {
-        //if(discovery[i_dis][4] != 0) {
-            for(int j_dis = 0; j_dis<discovery.size();j_dis++) {
-                if((i_dis != j_dis) && ((abs(discovery[i_dis][0]-discovery[j_dis][0])+abs(discovery[i_dis][1]-discovery[j_dis][1])<5))) {
-                    discovery[i_dis][4] = 0;
-                    discovery[j_dis][4] = 0;
-                    fprintf(results,"Discarded discoverys %d and %d because of too low separation\n",i_dis,j_dis);
-                }
+void TSOFinder::validate_discoverys(player_area_data player_area) // CHECK FOR SEPARATION OF DISCOVERYS AND DISCARD BUNCHED FALSE POSITIVES e.g. IN AVATAR
+{  
+    if(player_area.found) {
+        for(int i_dis = 0; i_dis < discovery.size(); i_dis++) {
+            if((discovery[i_dis][0] >= player_area.min_pos.x_pos) && (discovery[i_dis][1] >= player_area.min_pos.y_pos) &&
+               (discovery[i_dis][0] <= player_area.max_pos.x_pos) && (discovery[i_dis][1] <= player_area.max_pos.y_pos)) {
+
+                discovery[i_dis][4] = 0;
+                fprintf(results,"Discarded discovery %d because it is within player area\n",i_dis);
             }
-        //}
+        }
+    }
+
+    for(int i_dis = 0; i_dis < discovery.size() - 1; i_dis++) {
+        if(discovery[i_dis][4] == 0) {
+            continue;
+        }
+        for(int j_dis = i_dis + 1; j_dis < discovery.size(); j_dis++) {
+            if(discovery[j_dis][4] == 0) {
+                continue;
+            }
+            if((abs(discovery[i_dis][0]-discovery[j_dis][0]) + abs(discovery[i_dis][1]-discovery[j_dis][1]) < SEPARATION_MIN)) {
+                discovery[i_dis][4] = 0;
+                discovery[j_dis][4] = 0;
+                fprintf(results,"Discarded discoverys %d and %d because of too low separation\n",i_dis,j_dis);
+            }
+        }
     }
 }
 
@@ -215,9 +226,9 @@ void TSOFinder::on_findButton_clicked()
     if(get_method()==0) {           //M E T H O D  1:  P I X E L  F O O T P R I N T S
 
         //RESET PIXELARRAY
-        for(x=0;x<originalPixmap.width();x++) {
-            for(y=0;y<originalPixmap.height();y++) {
-                for(j=0;j<3;j++) {
+        for(int x=0;x<originalPixmap.width();x++) {
+            for(int y=0;y<originalPixmap.height();y++) {
+                for(int j=0;j<3;j++) {
                     pixels[x][y][j] = 0;
                 }
             }
@@ -225,47 +236,76 @@ void TSOFinder::on_findButton_clicked()
 
         //SCAN SCREENSHOT AND FILL PIXELARRAY
         //ACTUALLY ITS FASTER TO WRITE ALL PIXELS INTO AN INT-ARRAY FIRST THEN DIRECTLY ACCESS THE QImage-CLASS PIXELVALUE IN FURTHER CALCULATIONS. MIGHT BE COMPILER DEPENDEND.
-        for(x=0;x<originalPixmap.width();x++) {
-            for(y=0;y<originalPixmap.height();y++) {
+        for(int x=0;x<originalPixmap.width();x++) {
+            for(int y=0;y<originalPixmap.height();y++) {
                 imgrgb = originalImage.pixel(x,y);
-                r = qRed(imgrgb);
-                g = qGreen(imgrgb);
-                b = qBlue(imgrgb);
-                pixels[x][y][0] = r;
-                pixels[x][y][1] = g;
-                pixels[x][y][2] = b;
+                pixels[x][y][0] = qRed(imgrgb);
+                pixels[x][y][1] = qGreen(imgrgb);
+                pixels[x][y][2] = qBlue(imgrgb);
             }
         }
 
+        player_area_data player_area;
+
         //MAIN SEARCH ALGORITHM
-        for(x=borderbox;x<originalPixmap.width()-borderbox;x++) {       //SCAN IMAGE (X)
-            for(y=borderbox;y<originalPixmap.height()-borderbox;y++) {  //SCAN IMAGE (Y)
-                for(i=0;i<itemcount;i++) {                          //SCAN FOR ALL DEFINED ITEMS (items.cpp)
-                    item_found = false;
-                    for(j=0;j<items[i].shapecount;j++) {            //SCAN FOR ALL DEFINED SHAPES
+        for(int x = 0; x < originalPixmap.width(); x++) {       //SCAN IMAGE (X)
+            for(int y = 0; y < originalPixmap.height(); y++) {  //SCAN IMAGE (Y)
+                for(int item_number = 0; item_number < itemcount; item_number++) {                          //SCAN FOR ALL DEFINED ITEMS (items.cpp)
+                    bool item_found = false;
+                    for(int shape_number = 0; shape_number < items[item_number].shapecount; shape_number++) {            //SCAN FOR ALL DEFINED SHAPES
                         if(!item_found) {
-                            shape_disc = 0;
-                            shape_negating = 0;
-                            for(k=0;k<items[i].shape[j].pixelcount;k++) {                //SCAN ALL DEFINED PIXELS OF ITEMS
-                                if(items[i].shape[j].pixelcount - items[i].shape[j].needed + shape_disc >= k) { //SPEED UP IF DISCOVERY IMPOSSIBLE
-                                    if( pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][0]>items[i].shape[j].pixel[k].r.min &&
-                                        pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][0]<items[i].shape[j].pixel[k].r.max &&
-                                        pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][1]>items[i].shape[j].pixel[k].g.min &&
-                                        pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][1]<items[i].shape[j].pixel[k].g.max &&
-                                        pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][2]>items[i].shape[j].pixel[k].b.min &&
-                                        pixels[x+items[i].shape[j].pixel[k].pos.x_pos][y+items[i].shape[j].pixel[k].pos.y_pos][2]<items[i].shape[j].pixel[k].b.max) {
-                                        if(!items[i].shape[j].pixel[k].negating) shape_disc++;
-                                        else shape_negating++;
+                            int pixels_needed = items[item_number].shape[shape_number].needed;
+                            int pixels_defined = items[item_number].shape[shape_number].pixelcount;
+                            int pixels_discovered = 0;
+                            bool shape_impossible = false;
+
+                            for(int pixel_number = 0; pixel_number < items[item_number].shape[shape_number].pixelcount; pixel_number++) {                //SCAN ALL DEFINED PIXELS OF ITEMS
+
+                                // if we have less pixels left than needed to fullfill the shape, abort
+                                if(((pixels_defined - pixel_number) < (pixels_needed - pixels_discovered)) || shape_impossible) {
+                                    break;
+                                }
+
+                                pixel_data shape_pixel = items[item_number].shape[shape_number].pixel[pixel_number];
+
+                                int x_pos = x + shape_pixel.pos.x_pos;
+                                int y_pos = y + shape_pixel.pos.y_pos;
+
+                                // check if pixel access is out of bounds
+                                if (x_pos >= originalPixmap.width() || x_pos < 0  ||
+                                    y_pos >= originalPixmap.height() || y_pos < 0) {
+                                    continue;
+                                }
+
+                                if( pixels[x_pos][y_pos][0] > shape_pixel.r.min &&
+                                    pixels[x_pos][y_pos][0] < shape_pixel.r.max &&
+                                    pixels[x_pos][y_pos][1] > shape_pixel.g.min &&
+                                    pixels[x_pos][y_pos][1] < shape_pixel.g.max &&
+                                    pixels[x_pos][y_pos][2] > shape_pixel.b.min &&
+                                    pixels[x_pos][y_pos][2] < shape_pixel.b.max) {
+
+                                    if(shape_pixel.negating) {
+                                        shape_impossible = true;
+                                    } else {
+                                        pixels_discovered++;
                                     }
                                 }
                             }
-                            if(shape_disc >= items[i].shape[j].needed && shape_negating==0) {             //IF ITEM IS DISCOVERED MARK IT ON IMAGE AND WRITE LOGFILE. REWORK: WRITE DISCOVERYS INTO LIST AND DRAW AFTER THE FULL SCAN. FALSE POSITIVES IN AVATAR CAN THUS BE FILTERED OUT.
+                            if(pixels_discovered >= pixels_needed && !shape_impossible) {             //IF ITEM IS DISCOVERED MARK IT ON IMAGE AND WRITE LOGFILE. REWORK: WRITE DISCOVERYS INTO LIST AND DRAW AFTER THE FULL SCAN. FALSE POSITIVES IN AVATAR CAN THUS BE FILTERED OUT.
                                 item_found = true;
                                 //fprintf(results,"Possible %s (Shape %i) found at %i %i\n",items[i].caption,j,x,y);
-                                discovery.append(QVector<int>() << x << y << i << j << 1); // 0:X 1:Y 2:Item 3:Shape 4:Valid
+                                discovery.append(QVector<int>() << x << y << item_number << shape_number << 1); // 0:X 1:Y 2:Item 3:Shape 4:Valid
                                 //totaldiscoverys++;
                                 //if(items[i].item_type.compare(QString("standard"))==0) { draw_discovery(QPoint(x,y),config.items_standard_color,items[i].penstyle); }
                                 //else {draw_discovery(QPoint(x,y),config.items_event_color,items[i].penstyle);};
+
+                                if(items[item_number].item_type.compare(QString("player_area"))==0) {
+                                    player_area.found = true;                                    
+                                    player_area.min_pos.x_pos = x;
+                                    player_area.min_pos.y_pos = y;
+                                    player_area.max_pos.x_pos = player_area_size.x_pos + x;
+                                    player_area.max_pos.y_pos = player_area_size.y_pos + y;
+                                }
                             }
                         }
                     }
@@ -273,7 +313,7 @@ void TSOFinder::on_findButton_clicked()
             }
         }
         log_discoverys();
-        validate_discoverys();
+        validate_discoverys(player_area);
         draw_valids();
 
     } else if(get_method()==1) {                // M E T H O D  2:  B U I L D I N G S I T E S
@@ -298,13 +338,13 @@ void TSOFinder::on_findButton_clicked()
             count_brigth_min=10;    //MIN# OF BRIGHT GREEN PIXELS IN AREA
 
             //FILL DIVIMAGE WITH VALUES OF DIFFERENCE
-            for(x=0;x<divImage.width();x++) {
-                for(y=0;y<divImage.height();y++) {
+            for(int x=0;x<divImage.width();x++) {
+                for(int y=0;y<divImage.height();y++) {
                     imgrgb = originalImage.pixel(x,y);
                     bg_imgrgb = BGImage.pixel(x,y);
-                    r = abs(qRed(bg_imgrgb)-qRed(imgrgb));
-                    g = abs(qGreen(bg_imgrgb)-qGreen(imgrgb));
-                    b = abs(qBlue(bg_imgrgb)-qBlue(imgrgb));
+                    int r = abs(qRed(bg_imgrgb)-qRed(imgrgb));
+                    int g = abs(qGreen(bg_imgrgb)-qGreen(imgrgb));
+                    int b = abs(qBlue(bg_imgrgb)-qBlue(imgrgb));
 
                     if(b>250) divrgb=qRgb(0,0,0);   //IF PIXEL IS BLUE GET RID OF IT (NEEDED FOR FURTHER DISCRIMINATION)
                     else divrgb=qRgb(r,g,b);
@@ -318,15 +358,15 @@ void TSOFinder::on_findButton_clicked()
             paint_dev2.setPen(pen_dev);
 
             //MAIN SEARCH ALGORITHM
-            for(x=0;x<divImage.width()-2*fieldwidth;x++) {
-                for(y=0;y<divImage.height()-2*fieldwidth;y++) {
+            for(int x=0;x<divImage.width()-2*fieldwidth;x++) {
+                for(int y=0;y<divImage.height()-2*fieldwidth;y++) {
                     count_ok=0;
                     count_brigth=0;
                     count_double=0;
                     divrgb=divImage.pixel(x,y);
                     if(is_green(qRed(divrgb),qGreen(divrgb),qBlue(divrgb))) {   //IF PIXEL IS GREEN SCAN FIELDWIDTH*FIELDWIDTH FOR BUILDING SITE
-                        for(i=0;i<fieldwidth;i++){
-                            for(k=0;k<fieldwidth;k++){
+                        for(int i=0;i<fieldwidth;i++){
+                            for(int k=0;k<fieldwidth;k++){
                                 divrgb=divImage.pixel(x+i,y+k);
                                 if(is_green(qRed(divrgb),qGreen(divrgb),qBlue(divrgb))) {   //COUNT GREEN PIXELS
                                     count_ok++;

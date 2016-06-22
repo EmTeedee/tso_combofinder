@@ -26,19 +26,35 @@
 // itemcount = TOTAL NUMBER OF ITEMS
 // items.shapecount = TOTAL NUMBER OF DIFFERENT PATTERNS OR SHAPES FOR ONE ITEM
 // items.shape.pixelcount = TOTAL NUMBER OF DEFINED PIXELS PER SHAPE
-// borderbox = AT LEAST THE MAXIMUM SPREAD OF RELATIVE X AND Y POSITIONS +1. IF DEFINED PIXELS HAVE e.g.: -1, -4, 2, 3 AS RELATIVE pos, THEN borderbox MUST BE AT LEAST 5! (abs(-4)+1)
 // FAILURE IN ANY OF THIS MAY LEAD TO CRASHES
 
 void TSOFinder::init_items()
 {
-    borderbox = 10;
-    itemcount = 0;
+    itemcount = 1;
     if(config.useitems_basic) itemcount += 8;
     if(config.useitems_adventure) itemcount += 2;
     itemcount += events[config.use_event].itemcount;
 
     items = new item[itemcount];
-    i=0;
+    int i = 0;
+
+    // player area
+    items[i].caption = "Player Area";
+    items[i].item_type = "player_area";
+    items[i].color = QColor(0,0,0);
+    items[i].alt_color = QColor(0,0,0);
+    items[i].penstyle = Qt::SolidLine;
+    items[i].shapecount = 1;
+    items[i].shape = new item_shape[items[i].shapecount];
+    items[i].shape[0].needed = 3;
+    items[i].shape[0].pixelcount = 3;
+    items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
+    items[i].shape[0].pixel[0] = getPixel(255, 255,   0, 124, 137);
+    items[i].shape[0].pixel[1] = getPixel(210,  35,  29, 114, 134);
+    items[i].shape[0].pixel[2] = getPixel(179,  69,  57, 94, 288);
+    i++;
+    player_area_size.x_pos = 123;
+    player_area_size.y_pos = 299;
 
     if(config.useitems_basic) {
         items[i].caption = "Scarecrow";
@@ -1797,12 +1813,13 @@ TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int epsilon, int 
 
 TSOFinder::pixel_data TSOFinder::getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos){
     pixel_data pixel;
-    pixel.r.min = max(0, r - epsilon_r);
-    pixel.r.max = min(255, r + epsilon_r);
-    pixel.g.min = max(0, g - epsilon_g);
-    pixel.g.max = min(255, g + epsilon_g);
-    pixel.b.min = max(0, b - epsilon_b);
-    pixel.b.max = min(255, b + epsilon_b);
+    // clamp to -1 / 256 because of </> instead of <=/>= comparison
+    pixel.r.min = std::max(-1, r - epsilon_r);
+    pixel.r.max = std::min(256, r + epsilon_r);
+    pixel.g.min = std::max(-1, g - epsilon_g);
+    pixel.g.max = std::min(256, g + epsilon_g);
+    pixel.b.min = std::max(-1, b - epsilon_b);
+    pixel.b.max = std::min(256, b + epsilon_b);
     pixel.pos.x_pos = x_pos;
     pixel.pos.y_pos = y_pos;
     return pixel;

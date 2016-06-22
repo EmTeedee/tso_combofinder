@@ -72,13 +72,13 @@ void TSOFinder::init_ui_options()
     ui->itembasiccheckBox->setChecked(config.useitems_basic);
     ui->itemadventurecheckBox->setChecked(config.useitems_adventure);
 
-    for(i=0;i<eventcount;i++) {
+    for(int i = 0; i < eventcount; i++) {
         ui->itemeventcomboBox->addItem(events[i].caption);
     }
     ui->itemeventcomboBox->setCurrentIndex(config.use_event);
 
     ui->bgcomboBox->view()->setMinimumWidth(150);
-    for(i=0;i<bg_count;i++) {
+    for(int i = 0; i < bg_count; i++) {
         ui->bgcomboBox->addItem(QString("%1: %2").arg(i+1).arg(config.bg_caption[i]));
     }
     ui->bgcomboBox->addItem("+: New Slot");
