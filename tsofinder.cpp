@@ -37,6 +37,7 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     options_visible = false;
     ui->setupUi(this);
     this->setWindowTitle(QString("TSO Combo-Finder build " + CURRENT_VERSION));
+    this->setWindowIcon(QIcon(":/icons/app_icon"));
 
     //BEGIN DEBUG
     debug=false;

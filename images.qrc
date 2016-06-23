@@ -5,5 +5,6 @@
         <file alias="delete">trash.png</file>
         <file alias="save">save.png</file>
         <file alias="option">gear.png</file>
+        <file alias="app_icon">settler.png</file>
     </qresource>
 </RCC>
