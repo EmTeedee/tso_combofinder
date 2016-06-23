@@ -21,7 +21,8 @@
 
 #include "tsofinder.h"
 #include "ui_tsofinder.h"
-#include "QDesktopWidget"
+#include "QWindow"
+#include "QScreen"
 
 // minumum number of pixels between found collectibles
 const int TSOFinder::SEPARATION_MIN = 5;
@@ -87,10 +88,22 @@ void TSOFinder::on_takeButton_clicked()
     set_optionwindow(false);
     if(!config.stay_big) {
         set_gui(true,debug);
+        hide();
         timer.start();
         while(timer.elapsed()< config.waittime);                  // WAIT 600ms FOR PROPER RESIZING ON SLOWER MACHINES
     }
-    originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
+
+    // grab primary screen window
+    QScreen *screen = QGuiApplication::primaryScreen();
+    if (const QWindow *window = windowHandle())
+        screen = window->screen();
+    if (!screen) {
+        show();
+        set_gui(false,debug);
+        return;
+    }
+    originalPixmap = screen->grabWindow(0);
+
     if(originalPixmap.width() != d_width || originalPixmap.height() != d_heigth) { //ONLY REALLOCATE IF SCREENSIZE HAS CHANGED (MULTIMONITOR) -> DELETE MISSING!
         d_width = originalPixmap.width();
         d_heigth = originalPixmap.height();
@@ -107,6 +120,9 @@ void TSOFinder::on_takeButton_clicked()
     }
     //RESIZE TO FULL AND SHOW SCREENSHOT
     ui->screenlabel->setPixmap(originalPixmap.scaled(ui->screenlabel->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+    if(!config.stay_big) {
+        show();
+    }
     set_gui(false,debug);
 }
 
