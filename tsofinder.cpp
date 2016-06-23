@@ -98,7 +98,7 @@ void TSOFinder::on_takeButton_clicked()
     set_gui(false,debug);
 }
 
-void TSOFinder::resizeEvent(QResizeEvent *event)
+void TSOFinder::resizeEvent(QResizeEvent*)
 {
     if(this && !current_small_window)
     {
