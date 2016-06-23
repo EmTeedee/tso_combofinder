@@ -23,6 +23,17 @@
 #include "ui_tsofinder.h"
 #include "QDesktopWidget"
 
+// minumum number of pixels between found collectibles
+const int TSOFinder::SEPARATION_MIN = 5;
+
+// standard acceptable r/g/b/ value difference
+const int TSOFinder::STANDARD_EPSILON = 5;
+
+// VERSION PARAMETERS
+const QString TSOFinder::CURRENT_VERSION = QString("2016-06-22");
+const int TSOFinder::CONFIG_VERSION = 220614;
+
+
 TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TSOFinder)

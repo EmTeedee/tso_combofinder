@@ -119,15 +119,11 @@ public:
         bool stay_big;
     };
 
-    // minumum number of pixels between found collectibles
-    const int SEPARATION_MIN = 5;
-
-    // standard acceptable r/g/b/ value difference
-    const int STANDARD_EPSILON = 5;
-
-    // VERSION PARAMETERS
-    const QString CURRENT_VERSION = "2016-06-22";
-    const int CONFIG_VERSION = 220614;
+    // constants to be defined later
+    static const int SEPARATION_MIN;
+    static const int STANDARD_EPSILON;
+    static const QString CURRENT_VERSION;
+    static const int CONFIG_VERSION;
 
     //PIXELFINDER_RELATED OBJECTS/VARIABLES
     item* items;
