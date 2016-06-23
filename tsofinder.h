@@ -191,7 +191,7 @@ public:
 
     pixel_data getPixel(int r, int g, int b, int x_pos, int y_pos);
     pixel_data getPixel(int r, int g, int b, int epsilon, int x_pos, int y_pos);
-    pixel_data getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos);
+    pixel_data getPixel(int r_min, int r_max, int g_min, int g_max, int b_min, int b_max, int x, int y);
 
 protected:
     void resizeEvent(QResizeEvent*);

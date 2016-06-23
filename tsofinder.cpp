@@ -31,8 +31,8 @@ const int TSOFinder::SEPARATION_MIN = 5;
 const int TSOFinder::STANDARD_EPSILON = 5;
 
 // VERSION PARAMETERS
-const QString TSOFinder::CURRENT_VERSION = QString("2016-06-22");
-const int TSOFinder::CONFIG_VERSION = 220614;
+const QString TSOFinder::CURRENT_VERSION = QString("2016-06-23");
+const int TSOFinder::CONFIG_VERSION = 230614;
 
 
 TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :

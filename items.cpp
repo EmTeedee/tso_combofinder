@@ -3,6 +3,7 @@
  *
  *  Copyright 2010-2014 by malkolm <tobid@gmx.ch>
  *  Copyright 2016 by EmTeedee <emteedee@web.de>
+ *  Copyright 2016 by poki
  *
  *  TSO Combofinder is free software: you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public License
@@ -1783,7 +1784,7 @@ void TSOFinder::init_items()
         items[i].color = QColor(220,170,40);
         items[i].alt_color = QColor(220,170,40);
         items[i].penstyle = Qt::SolidLine;
-        items[i].shapecount = 2;
+        items[i].shapecount = 3;
         items[i].shape = new item_shape[items[i].shapecount];
         items[i].shape[0].needed = 3;
         items[i].shape[0].pixelcount = 3;
@@ -1799,6 +1800,15 @@ void TSOFinder::init_items()
         items[i].shape[1].pixel[0] = getPixel(165, 129, 44, 10, 0, 0);
         items[i].shape[1].pixel[1] = getPixel(156, 121, 43, 10, 0, -3);
         items[i].shape[1].pixel[2] = getPixel( 92,  78, 28, 10, 0, 4);
+
+        //DUMMIE SHAPE (by poki)
+        items[i].shape[2].needed = 4;
+        items[i].shape[2].pixelcount = 4;
+        items[i].shape[2].pixel = new pixel_data[items[i].shape[2].pixelcount];
+        items[i].shape[2].pixel[0] = getPixel(205, 223, 177, 195, 115, 133, 0, 0);
+        items[i].shape[2].pixel[1] = getPixel(187, 205, 150, 168, 72, 90, 1, 3);
+        items[i].shape[2].pixel[2] = getPixel(174, 192, 134, 152, 51, 69, 1, 7);
+        items[i].shape[2].pixel[3] = getPixel(164, 182, 129, 147, 43, 61, 0, 2);
         i++;
     }
 }
@@ -1808,19 +1818,28 @@ TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int x_pos, int y_
 }
 
 TSOFinder::pixel_data TSOFinder::getPixel(int r, int g, int b, int epsilon, int x_pos, int y_pos) {
-    return getPixel(r, epsilon, g, epsilon, b, epsilon, x_pos, y_pos);
-}
-
-TSOFinder::pixel_data TSOFinder::getPixel(int r, int epsilon_r, int g, int epsilon_g, int b, int epsilon_b, int x_pos, int y_pos){
     pixel_data pixel;
     // clamp to -1 / 256 because of </> instead of <=/>= comparison
-    pixel.r.min = std::max(-1, r - epsilon_r);
-    pixel.r.max = std::min(256, r + epsilon_r);
-    pixel.g.min = std::max(-1, g - epsilon_g);
-    pixel.g.max = std::min(256, g + epsilon_g);
-    pixel.b.min = std::max(-1, b - epsilon_b);
-    pixel.b.max = std::min(256, b + epsilon_b);
+    pixel.r.min = std::max(-1, r - epsilon);
+    pixel.r.max = std::min(256, r + epsilon);
+    pixel.g.min = std::max(-1, g - epsilon);
+    pixel.g.max = std::min(256, g + epsilon);
+    pixel.b.min = std::max(-1, b - epsilon);
+    pixel.b.max = std::min(256, b + epsilon);
     pixel.pos.x_pos = x_pos;
     pixel.pos.y_pos = y_pos;
+    return pixel;
+}
+
+TSOFinder::pixel_data TSOFinder::getPixel(int r_min, int r_max, int g_min, int g_max, int b_min, int b_max, int x, int y) {
+    pixel_data pixel;
+    pixel.r.min = r_min;
+    pixel.r.max = r_max;
+    pixel.g.min = g_min;
+    pixel.g.max = g_max;
+    pixel.b.min = b_min;
+    pixel.b.max = b_max;
+    pixel.pos.x_pos = x;
+    pixel.pos.y_pos = y;
     return pixel;
 }
