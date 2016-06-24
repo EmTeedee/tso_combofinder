@@ -151,7 +151,7 @@ void TSOFinder::on_debugsaveButton_clicked()
 int TSOFinder::get_bgcount()
 {
     int count = 0;
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < 99; i++) {
         if(QFile::exists(QString("background%1.png").arg(i))) {
             if(i!=count) {
                 QFile::rename(QString("background%1.png").arg(i),QString("background%1.png").arg(count));
