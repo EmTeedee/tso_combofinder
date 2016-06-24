@@ -48,11 +48,12 @@ void TSOFinder::init_items()
     items[i].shapecount = 1;
     items[i].shape = new item_shape[items[i].shapecount];
     items[i].shape[0].needed = 3;
-    items[i].shape[0].pixelcount = 3;
+    items[i].shape[0].pixelcount = 4;
     items[i].shape[0].pixel = new pixel_data[items[i].shape[0].pixelcount];
     items[i].shape[0].pixel[0] = getPixel(255, 255,   0, 124, 137);
     items[i].shape[0].pixel[1] = getPixel(210,  35,  29, 114, 134);
     items[i].shape[0].pixel[2] = getPixel(179,  69,  57, 94, 288);
+    items[i].shape[0].pixel[3] = getPixel(167,  64,  53, 94, 397);
     i++;
     player_area_size.x_pos = 123;
     player_area_size.y_pos = 299;
