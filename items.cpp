@@ -31,10 +31,21 @@
 
 void TSOFinder::init_items()
 {
+    // free memory if items already declared
+    if (itemcount != 0)
+    {
+        for(int i = 0; i < itemcount; i++)
+            delete [] items[i].shape;
+
+        delete [] items;
+    }
+
     itemcount = 1;
     if(config.useitems_basic) itemcount += 8;
     if(config.useitems_adventure) itemcount += 2;
-    itemcount += events[config.use_event].itemcount;
+
+    event_data cur_events = get_events();
+    itemcount += cur_events.events[config.use_event].itemcount;
 
     items = new item[itemcount];
     int i = 0;
@@ -45,6 +56,8 @@ void TSOFinder::init_items()
     items[i].color = QColor(0,0,0);
     items[i].alt_color = QColor(0,0,0);
     items[i].penstyle = Qt::SolidLine;
+    items[i].width = 123;
+    items[i].height = 299;
     items[i].shapecount = 1;
     items[i].shape = new item_shape[items[i].shapecount];
     items[i].shape[0].needed = 3;
@@ -54,8 +67,7 @@ void TSOFinder::init_items()
     items[i].shape[0].pixel[1] = getPixel(210,  35,  29, 114, 134);
     items[i].shape[0].pixel[2] = getPixel(179,  69,  57, 94, 288);
     i++;
-    player_area_size.x_pos = 123;
-    player_area_size.y_pos = 299;
+
 
     if(config.useitems_basic) {
         items[i].caption = "Scarecrow";

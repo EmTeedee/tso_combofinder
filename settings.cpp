@@ -26,6 +26,10 @@
 
 void TSOFinder::load_settings()
 {
+    // default language
+    QString defaultLocale = QLocale::system().name(); // e.g. "de_DE"
+    defaultLocale.truncate(defaultLocale.lastIndexOf('_')); // e.g. "de"
+
     //LOAD CONFIGFILE
     configfile = new QSettings("config.cfg",QSettings::IniFormat);      //INIT CONFIGFILE
 
@@ -40,12 +44,13 @@ void TSOFinder::load_settings()
     config.items_event_color = configfile->value("event_color",QColor(220,170,40)).value<QColor>();
     config.jump_position = configfile->value("jump_position",true).toBool();
     config.stay_big = configfile->value("stay_big",false).toBool();
+    config.language = configfile->value("language", defaultLocale).toString();
     configfile->endGroup();
 
     configfile->beginGroup("ITEM-SETTINGS");
     config.useitems_basic = configfile->value("basic",true).toBool();
     config.useitems_adventure = configfile->value("adventure",true).toBool();
-    config.use_event = configfile->value("use_event",6).toInt();
+    config.use_event = configfile->value("use_event",0).toInt();
     configfile->endGroup();
 
     configfile->beginGroup("BACKGROUND");
@@ -57,6 +62,17 @@ void TSOFinder::load_settings()
     configfile->endGroup();
 
     configfile->sync();
+}
+
+void TSOFinder::init_events()
+{
+    ui->itemeventcomboBox->clear();
+
+    event_data cur_events = get_events();
+    for(int i = 0; i < cur_events.eventcount; i++) {
+        ui->itemeventcomboBox->addItem(cur_events.events[i].caption);
+    }
+    ui->itemeventcomboBox->setCurrentIndex(config.use_event);
 }
 
 void TSOFinder::init_ui_options()
@@ -71,11 +87,6 @@ void TSOFinder::init_ui_options()
 
     ui->itembasiccheckBox->setChecked(config.useitems_basic);
     ui->itemadventurecheckBox->setChecked(config.useitems_adventure);
-
-    for(int i = 0; i < eventcount; i++) {
-        ui->itemeventcomboBox->addItem(events[i].caption);
-    }
-    ui->itemeventcomboBox->setCurrentIndex(config.use_event);
 
     ui->bgcomboBox->view()->setMinimumWidth(150);
     for(int i = 0; i < bg_count; i++) {
@@ -135,6 +146,7 @@ void TSOFinder::save_settings()
     configfile->setValue("event_color",config.items_event_color);
     configfile->setValue("jump_position",config.jump_position);
     configfile->setValue("stay_big",config.stay_big);
+    configfile->setValue("language",config.language);
     configfile->endGroup();
 
     configfile->beginGroup("ITEM-SETTINGS");

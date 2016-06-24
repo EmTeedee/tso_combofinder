@@ -39,9 +39,9 @@ void TSOFinder::set_gui(bool small, bool is_debug)
         ui->ontopcheckbox->hide();
         ui->screenlabel->hide();
         ui->methodtab->hide();
-        ui->optionButton->hide();
+        //ui->optionButton->hide();
         ui->optionwidget->hide();
-        this->resize(100,60);
+        this->resize(SIZE_MINIMIZED_WIDTH, SIZE_MINIMIZED_HEIGHT);
         this->move(config.position_small);
         //this->move(100,100);
     } else {
@@ -126,7 +126,7 @@ void TSOFinder::load_background()
     else {
         bg_exist = false;
         if(bg_count == 0) {
-            msgbox.setText(QString("No background file found! Create it like this:\na) Open DSO in your max-sized browser.\nb) Make sure there is no collectible left on your map at the moment\nc) Zoom out as far as possible\nd) Move to a fixed position(e.g.: hitting 5 on your keyboard)\ne) Grab a flowerbed or other 1x1 decorational item from you starmenu (Most of the map should apear greenish now)\nf) Open this program, move the window somewhere in your screen where it only hides water\ng) Hit Take Screen\nh) Hit Save as BG\n\n!Redo this everytime you move/erase/build new stuff on your map!"));
+            msgbox.setText(QString(tr("No background file found! Create it like this:\na) Open DSO in your max-sized browser.\nb) Make sure there is no collectible left on your map at the moment\nc) Zoom out as far as possible\nd) Move to a fixed position(e.g.: hitting 5 on your keyboard)\ne) Grab a flowerbed or other 1x1 decorational item from you starmenu (Most of the map should apear greenish now)\nf) Open this program, move the window somewhere in your screen where it only hides water\ng) Hit Take Screen\nh) Hit Save as BG\n\n!Redo this everytime you move/erase/build new stuff on your map!")));
             msgbox.exec();
         }
     }
@@ -143,11 +143,11 @@ void TSOFinder::on_bgcomboBox_activated(int index)
 void TSOFinder::setactive(bool active)
 {
     if(!active) {
-        ui->findButton->setText("searching...");
+        ui->findButton->setText(tr("searching..."));
         ui->countlabel->setText("?");
         ui->findButton->setEnabled(false);
     } else {
-        ui->findButton->setText("Find Objects");
+        ui->findButton->setText(tr("Find Objects"));
         ui->findButton->setEnabled(true);
     }
 

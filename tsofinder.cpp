@@ -23,6 +23,7 @@
 #include "ui_tsofinder.h"
 #include "QWindow"
 #include "QScreen"
+#include "QDir"
 
 // minumum number of pixels between found collectibles
 const int TSOFinder::SEPARATION_MIN = 5;
@@ -34,6 +35,9 @@ const int TSOFinder::STANDARD_EPSILON = 5;
 const QString TSOFinder::CURRENT_VERSION = QString("2016-06-23");
 const int TSOFinder::CONFIG_VERSION = 230614;
 
+// Window size while minimized
+const int TSOFinder::SIZE_MINIMIZED_WIDTH = 150;
+const int TSOFinder::SIZE_MINIMIZED_HEIGHT = 100;
 
 TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     QMainWindow(parent),
@@ -48,7 +52,7 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     current_small_window = true;
     options_visible = false;
     ui->setupUi(this);
-    this->setWindowTitle(QString("TSO Combo-Finder build " + CURRENT_VERSION));
+    this->setWindowTitle(QString(tr("TSO Combo-Finder build ") + CURRENT_VERSION));
     this->setWindowIcon(QIcon(":/icons/app_icon"));
 
     //BEGIN DEBUG
@@ -63,12 +67,15 @@ TSOFinder::TSOFinder(int argc,char* argv[],QWidget *parent) :
     bg_count = get_bgcount(); //CHECK CURRENT DIRECTORY FOR VALID BACKGROUND FILES
     load_settings(); //LOAD USER-DEFINED VARIABLES
     check_version(); //CHECK FOR OUT OF DATE VERSION
-    init_events(); //LOOK AT events.cpp FOR LIST OF EVENTS
+
+    // Languages
+    init_languages();
+
+    // Update UI
     init_ui_options(); //SET OPTIONS IN THE SETTINGS TAB
-    init_items(); //LOOK AT items.cpp FOR LIST OF ITEMS
 
     //START RESIZED SMALL
-    this->setMinimumSize(100,55);
+    this->setMinimumSize(SIZE_MINIMIZED_WIDTH,SIZE_MINIMIZED_HEIGHT);
     set_gui(true,debug);
 }
 
@@ -79,6 +86,88 @@ TSOFinder::~TSOFinder()
     delete ui;
 }
 
+void TSOFinder::init_languages(void)
+{
+    QDir dir(QString(":/languages"));
+    QStringList fileNames = dir.entryList(QStringList("*"));
+
+    for (int i = 0; i < fileNames.size(); ++i) {
+        // get locale extracted by filename
+        QString locale;
+        locale = fileNames[i]; // "de"
+
+        QString lang = QLocale::languageToString(QLocale(locale).language());
+
+        ui->languagecomboBox->addItem(lang, locale);
+
+        // set default translators and language checked
+        if (config.language == locale) {
+            ui->languagecomboBox->setCurrentIndex(i);
+        }
+    }
+
+    // connect event
+    connect(ui->languagecomboBox, SIGNAL(currentIndexChanged(int)), this, SLOT (slotLanguageChanged(int)));
+
+    // trigger language update
+    slotLanguageChanged(ui->languagecomboBox->currentIndex());
+}
+
+// Called every time, when a menu entry of the language menu is called
+void TSOFinder::slotLanguageChanged(int index)
+{
+    // load the language dependant on the user data content
+    loadLanguage(ui->languagecomboBox->itemData(index).toString());
+}
+
+void switchTranslator(QTranslator& translator, const QString& filename)
+{
+    // remove the old translator
+    qApp->removeTranslator(&translator);
+
+    // load the new translator
+    if(translator.load(filename))
+    {
+        qApp->installTranslator(&translator);
+    }
+}
+
+void TSOFinder::loadLanguage(const QString& rLanguage)
+{
+    if(m_currLang != rLanguage) {
+        m_currLang = rLanguage;
+        QLocale locale = QLocale(m_currLang);
+        QLocale::setDefault(locale);
+        QString languageName = QLocale::languageToString(locale.language());
+        switchTranslator(m_translator, QString(":/languages/%1").arg(rLanguage));
+        config.language = rLanguage;
+    }
+}
+
+void TSOFinder::changeEvent(QEvent* event)
+{
+    if(0 != event) {
+        switch(event->type()) {
+            // this event is sent if a translator is loaded
+            case QEvent::LanguageChange:
+                ui->retranslateUi(this);
+                init_events();
+                break;
+
+            // this event is sent, if the system, language changes
+            case QEvent::LocaleChange:
+                {
+                    QString locale = QLocale::system().name();
+                    locale.truncate(locale.lastIndexOf('_'));
+                    loadLanguage(locale);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    QMainWindow::changeEvent(event);
+}
 
 void TSOFinder::on_takeButton_clicked()
 {
@@ -331,8 +420,8 @@ void TSOFinder::on_findButton_clicked()
                                     player_area.found = true;                                    
                                     player_area.min_pos.x_pos = x;
                                     player_area.min_pos.y_pos = y;
-                                    player_area.max_pos.x_pos = player_area_size.x_pos + x;
-                                    player_area.max_pos.y_pos = player_area_size.y_pos + y;
+                                    player_area.max_pos.x_pos = items[item_number].width + x;
+                                    player_area.max_pos.y_pos = items[item_number].height + y;
                                 }
                             }
                         }
@@ -348,12 +437,12 @@ void TSOFinder::on_findButton_clicked()
         //CHECK FOR CORRECT BACKGROUND IMAGE SIZE
         if(bg_exist) {
             if(BGImage.width()!=originalImage.width() || BGImage.height() != originalImage.height()) {
-                msgbox.setText(QString("Background file has wrong resolution!"));
+                msgbox.setText(QString(tr("Background file has wrong resolution!")));
                 msgbox.exec();
                 bg_exist = false;
             }
         } else {
-            msgbox.setText(QString("No valid background file"));
+            msgbox.setText(QString(tr("No valid background file.")));
             msgbox.exec();
         }
         if(bg_exist) {
@@ -445,8 +534,8 @@ void TSOFinder::on_savebgButton_clicked()
     bool ok = false;
     QString default_text;
     if(config.bg_caption.size() > config.use_bg) default_text = config.bg_caption[config.use_bg];
-    else default_text = "Main Island S5";
-    QString caption = QInputDialog::getText(this,QString("Save in Slot %1").arg(config.use_bg + 1),"Enter caption:",QLineEdit::Normal,default_text,&ok);
+    else default_text = tr("Main Island S5");
+    QString caption = QInputDialog::getText(this,QString(tr("Save in Slot %1")).arg(config.use_bg + 1),tr("Enter caption:"),QLineEdit::Normal,default_text,&ok);
 
     if(ok) {
         if(config.use_bg == bg_count) {
@@ -455,7 +544,7 @@ void TSOFinder::on_savebgButton_clicked()
             ui->bgcomboBox->insertItem(config.use_bg,QString("%1: %2").arg(config.use_bg+1).arg(config.bg_caption[config.use_bg]));
             ui->bgcomboBox->setCurrentIndex(config.use_bg);
         } else if(config.use_bg < bg_count) {
-            if(QMessageBox::question(this,"Confirm overwrite",QString("Do you really want to replace the bachground in Slot %1?").arg(config.use_bg+1),QMessageBox::Ok | QMessageBox::Cancel,QMessageBox::Cancel) == QMessageBox::Ok) {
+            if(QMessageBox::question(this,tr("Confirm overwrite"),QString(tr("Do you really want to replace the bachground in Slot %1?")).arg(config.use_bg+1),QMessageBox::Ok | QMessageBox::Cancel,QMessageBox::Cancel) == QMessageBox::Ok) {
                 config.bg_caption[config.use_bg] = caption;
                 ui->bgcomboBox->setItemText(config.use_bg,QString("%1: %2").arg(config.use_bg+1).arg(caption));
             }
@@ -471,7 +560,7 @@ void TSOFinder::on_showbgButton_clicked()
     if(bg_exist) {
         ui->screenlabel->setPixmap(QPixmap::fromImage(BGImage).scaled(ui->screenlabel->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
     } else {
-        msgbox.setText(QString("No valid background file."));
+        msgbox.setText(QString(tr("No valid background file.")));
         msgbox.exec();
     }
 }
@@ -480,7 +569,7 @@ void TSOFinder::on_bg_editpushButton_clicked()
 {
     if(config.use_bg >= bg_count) return;
     bool ok = false;
-    QString caption = QInputDialog::getText(this,QString("Edit Slot %1").arg(config.use_bg + 1),"Enter new caption:",QLineEdit::Normal,config.bg_caption[config.use_bg],&ok);
+    QString caption = QInputDialog::getText(this,QString(tr("Edit Slot %1")).arg(config.use_bg + 1),tr("Enter new caption:"),QLineEdit::Normal,config.bg_caption[config.use_bg],&ok);
     if(ok) {
         config.bg_caption[config.use_bg] = caption;
         ui->bgcomboBox->setItemText(config.use_bg,QString("%1: %2").arg(config.use_bg+1).arg(caption));
@@ -490,7 +579,7 @@ void TSOFinder::on_bg_editpushButton_clicked()
 void TSOFinder::on_bgdeletepushButton_clicked()
 {
     if(config.use_bg >= bg_count) return;
-    int ok = QMessageBox::question(this,"Delete Background",QString("Do you really want to delete the background file in Slot %1?").arg(config.use_bg+1),
+    int ok = QMessageBox::question(this,tr("Delete Background"),QString(tr("Do you really want to delete the background file in Slot %1?")).arg(config.use_bg+1),
                                         QMessageBox::Ok | QMessageBox::Cancel,
                                         QMessageBox::Cancel);
     if(ok == QMessageBox::Ok) {

@@ -35,6 +35,7 @@
 #include <QColorDialog>
 #include <QFile>
 #include <QInputDialog>
+#include <QTranslator>
 
 namespace Ui {
     class TSOFinder;
@@ -88,14 +89,21 @@ public:
         QColor color;
         QColor alt_color;
         Qt::PenStyle penstyle;
+        int width;
+        int height;
 
-        item():item_type("standard"){}
+        item() : item_type("standard"), width(0), height(0) {}
     };
 
     struct event {
         QString caption;
         int id;
         int itemcount;
+    };
+
+    struct event_data {
+        event* events;
+        int eventcount;
     };
 
     struct configuration {
@@ -117,6 +125,8 @@ public:
 
         bool jump_position;
         bool stay_big;
+
+        QString language;
     };
 
     // constants to be defined later
@@ -124,14 +134,13 @@ public:
     static const int STANDARD_EPSILON;
     static const QString CURRENT_VERSION;
     static const int CONFIG_VERSION;
+    static const int SIZE_MINIMIZED_WIDTH;
+    static const int SIZE_MINIMIZED_HEIGHT;
 
     //PIXELFINDER_RELATED OBJECTS/VARIABLES
+    int itemcount = 0;
     item* items;
-    int itemcount;
-    event* events;
-    int eventcount;
     int*** pixels;
-    pixel_pos player_area_size;
     QVector<QVector<int> > discovery;
 
     //BUILDING_SITE_RELATED OBJECTS/VARIABLES
@@ -177,8 +186,6 @@ public:
     void validate_discoverys(player_area_data player_area);
     void draw_valids();
     void draw_discovery(QPoint coords, QColor color, Qt::PenStyle style);
-    void init_items();
-    void init_events();
     void load_settings();
     void load_background();
     void check_version();
@@ -195,7 +202,11 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent*);
+    void changeEvent(QEvent*);
 
+protected slots:
+    // this slot is called by the language menu actions
+    void slotLanguageChanged(int index);
 
 private slots:
     void on_takeButton_clicked();
@@ -252,6 +263,16 @@ private slots:
 
 private:
     Ui::TSOFinder *ui;
+
+    void init_languages(void);
+    void loadLanguage(const QString& rLanguage);
+
+    void init_items();
+    event_data get_events();
+
+    QTranslator m_translator; // contains the translations for this application
+    QString m_currLang; // contains the currently loaded language
+    void init_events();
 };
 
 #endif // TSOFINDER_H
