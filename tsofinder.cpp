@@ -32,8 +32,8 @@ const int TSOFinder::SEPARATION_MIN = 5;
 const int TSOFinder::STANDARD_EPSILON = 5;
 
 // VERSION PARAMETERS
-const QString TSOFinder::CURRENT_VERSION = QString("2016-06-23");
-const int TSOFinder::CONFIG_VERSION = 230614;
+const QString TSOFinder::CURRENT_VERSION = QString("2016-06-25");
+const int TSOFinder::CONFIG_VERSION = 250614;
 
 // Window size while minimized
 const int TSOFinder::SIZE_MINIMIZED_WIDTH = 150;
