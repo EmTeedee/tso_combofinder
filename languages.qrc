@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/languages">
+        <file alias="de">languages/tsofinder_de.qm</file>
+        <file alias="en">languages/tsofinder_en.qm</file>
+    </qresource>
+</RCC>

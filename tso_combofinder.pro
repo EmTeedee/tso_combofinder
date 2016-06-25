@@ -27,7 +27,12 @@ FORMS    += tsofinder.ui
 DISTFILES +=
 
 RESOURCES += \
-    images.qrc
+    images.qrc\
+    languages.qrc
+
+TRANSLATIONS = \
+    languages/tsofinder_en.ts\
+    languages/tsofinder_de.ts
 
 QMAKE_TARGET_DESCRIPTION = "The Settlers Online - Collectible Finder"
 win32:RC_ICONS += settler.ico

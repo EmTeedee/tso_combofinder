@@ -39,6 +39,9 @@ void TSOFinder::set_optionwindow(bool visible)
 
 void TSOFinder::on_optionButton_clicked()
 {
+    if(current_small_window)
+        set_gui(false, debug);
+
     if(!options_visible) {
         set_optionwindow(true);
     } else {
