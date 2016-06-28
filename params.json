@@ -1,0 +1,6 @@
+{
+  "name": "The Settlers Online - Collectibles Finder",
+  "tagline": "The Settlers Online - Collectibles Finder",
+  "body": "The Settlers Online - Collectibles Finder\r\n=========================================\r\n\r\nNotice\r\n------\r\n\r\nThis project is currently being merged into https://github.com/jamescastle/combofinder  \r\nIf you want to contribute, please contribute there.\r\n\r\nAcknowledgements\r\n----------------\r\n\r\nThis program is based on the combofinder by user **malkolm** on the german settlers online forums.  \r\nhttp://forum.diesiedleronline.de/threads/99236-SammelItems-Vorstellung-zweier-legaler-Suchroutinen\r\n\r\nGerman translation and some other neat ideas by james_castle on the german settlers online forums.  \r\nhttps://github.com/jamescastle/combofinder\r\n\r\nLicense\r\n-------\r\n\r\nThis work is licensed under the LGPL",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
