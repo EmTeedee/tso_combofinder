@@ -88,6 +88,8 @@ void TSOFinder::init_ui_options()
     ui->itembasiccheckBox->setChecked(config.useitems_basic);
     ui->itemadventurecheckBox->setChecked(config.useitems_adventure);
 
+    init_events();
+
     ui->bgcomboBox->view()->setMinimumWidth(150);
     for(int i = 0; i < bg_count; i++) {
         ui->bgcomboBox->addItem(QString("%1: %2").arg(i+1).arg(config.bg_caption[i]));
